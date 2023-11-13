@@ -8,7 +8,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { useEffect, useState } from "react";
-import { FaBeer, FaQuoteLeft } from 'react-icons/fa';
+import {  FaQuoteLeft } from 'react-icons/fa';
 
 const Testimonials = () => {
     const [reviews, setReviews] = useState([]);
