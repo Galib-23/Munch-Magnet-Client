@@ -4,6 +4,7 @@ import Cover from '../../Shared/Cover/Cover';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import useMenu from '../../../hooks/useMenu';
+import OrderTab from '../OrderTab/OrderTab';
 
 const Order = () => {
     const [tabIndex, setTabIndex] = useState(0);
@@ -12,7 +13,7 @@ const Order = () => {
     const soup = menu.filter(item => item.category === 'soup');
     const salad = menu.filter(item => item.category === 'salad');
     const pizza = menu.filter(item => item.category === 'pizza');
-    const offered = menu.filter(item => item.category === 'offered');
+    const drinks = menu.filter(item => item.category === 'drinks');
     return (
         <div>
             <Cover img={orderImg} title={"Order Food"}></Cover>
@@ -24,8 +25,21 @@ const Order = () => {
                     <Tab>Dessert</Tab>
                     <Tab>Drinks</Tab>
                 </TabList>
-                <TabPanel></TabPanel>
-                <TabPanel></TabPanel>
+                <TabPanel>
+                    <OrderTab item={salad}></OrderTab>
+                </TabPanel>
+                <TabPanel>
+                <OrderTab item={pizza}></OrderTab>
+                </TabPanel>
+                <TabPanel>
+                <OrderTab item={soup}></OrderTab>
+                </TabPanel>
+                <TabPanel>
+                <OrderTab item={desserts}></OrderTab>
+                </TabPanel>
+                <TabPanel>
+                <OrderTab item={drinks}></OrderTab>
+                </TabPanel>
             </Tabs>
         </div>
     );
