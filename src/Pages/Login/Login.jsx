@@ -1,26 +1,38 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
+import { AuthContext } from '../../Providers/AuthProvider';
 
 const Login = () => {
     const captchaRef = useRef(null);
     const [disabled, setDisabled] = useState(true);
+    const { signIn } = useContext(AuthContext);
+
     useEffect(() => {
         loadCaptchaEnginge(6);
     }, [])
+
     const handleLogin = (event) => {
         event.preventDefault();
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
         console.log(email, password)
+        signIn(email, password)
+        .then(result => {
+            const user = result.user;
+            console.log(user);
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
     const handleValidateCapthca = () => {
         const user_capthca_value = captchaRef.current.value;
         console.log(user_capthca_value);
-        if(validateCaptcha(user_capthca_value)){
+        if (validateCaptcha(user_capthca_value)) {
             setDisabled(false);
-        }else{
+        } else {
             setDisabled(true);
         }
     }
@@ -63,7 +75,7 @@ const Login = () => {
                                 ref={captchaRef}
                                 name="capthca"
                                 placeholder="Type the above text" className="input input-bordered" required />
-                                <button onClick={handleValidateCapthca} className='btn btn-outline btn-xs mt-2'>Validate</button>
+                            <button onClick={handleValidateCapthca} className='btn btn-outline btn-xs mt-2'>Validate</button>
                         </div>
                         <div className="form-control mt-6">
                             <input disabled={disabled} className="btn text-white btn-primary" type="submit" value="Login" />
