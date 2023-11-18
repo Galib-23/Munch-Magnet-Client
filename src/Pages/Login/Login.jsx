@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../Providers/AuthProvider';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const captchaRef = useRef(null);
@@ -75,12 +76,13 @@ const Login = () => {
                                 ref={captchaRef}
                                 name="capthca"
                                 placeholder="Type the above text" className="input input-bordered" required />
-                            <button onClick={handleValidateCapthca} className='btn btn-outline btn-xs mt-2'>Validate</button>
+                            <button onClick={handleValidateCapthca} className='btn border-blue-500 text-blue-700 btn-outline btn-xs mt-2 w-1/2'>Validate Capthca</button>
                         </div>
                         <div className="form-control mt-6">
                             <input disabled={disabled} className="btn text-white btn-primary" type="submit" value="Login" />
                         </div>
                     </form>
+                    <p className='text-center mb-2'><small>New Here ? <Link className='font-bold text-blue-600' to='/signup'>Create Account</Link></small></p>
                 </div>
             </div>
         </div>
