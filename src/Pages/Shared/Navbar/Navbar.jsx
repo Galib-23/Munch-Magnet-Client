@@ -1,20 +1,27 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import { FaShoppingCart } from 'react-icons/fa';
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
-    const handleLogOut = () =>{
+    const handleLogOut = () => {
         logOut()
-        .then(()=>{})
-        .catch(error => console.log(error))
+            .then(() => { })
+            .catch(error => console.log(error))
     }
+
+    const cartIcon = <button className="btn bg-transparent border-none hover:bg-orange-200 hover:bg-opacity-20">
+        <FaShoppingCart className="text-white" />
+        <div className="badge badge-secondary left-0">+99</div>
+    </button>
+
     const navOptions = <>
-        <li className="text-orange-500 underline"><Link to='/'>Home</Link></li>
-        <li className="text-orange-500 underline"><Link to='/menu'>Menu</Link></li>
-        <li className="text-orange-500 underline"><Link to='/order/salad'>Order Food</Link></li>
+        <li className="text-orange-500 underline"><Link className="hover:text-white" to='/'>Home</Link></li>
+        <li className="text-orange-500 underline"><Link className="hover:text-white" to='/menu'>Menu</Link></li>
+        <li className="text-orange-500 underline"><Link className="hover:text-white" to='/order/salad'>Order Food</Link></li>
         {
-            user ? <></> : <li className="text-orange-500 underline"><Link to='/login'>Login</Link></li>
+            user ? <></> : <li className="text-orange-500 underline"><Link className="hover:text-white" to='/login'>Login</Link></li>
         }
     </>
     return (
@@ -27,9 +34,10 @@ const Navbar = () => {
                         </label>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52">
                             {navOptions}
+                            {cartIcon}
                         </ul>
                     </div>
-                    <a className="btn btn-ghost normal-case text-xl">Bistro Boss</a>
+                    <a className="btn btn-ghost normal-case text-xl">Munch Magnet</a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
@@ -38,12 +46,14 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end">
                     {
-                        user ? <div className="flex items-center gap-2">
-                            <p>{user.displayName}</p>
-                            <img className="w-12 rounded-full" src={user.photoURL} alt="" />
+                        user ? <div className="flex items-center gap-1 lg:gap-5">
+                            <div className="hidden lg:flex">
+                                {cartIcon}
+                            </div>
+                            <img className="w-12 rounded-full hover:border-2 border-orange-400" src={user.photoURL} alt="" />
                             <button onClick={handleLogOut} className="btn btn-accent btn-outline btn-sm">Log Out</button>
                         </div>
-                        : <Link to='/login'><button className="btn btn-accent btn-outline btn-sm">Log In</button></Link>
+                            : <Link to='/login'><button className="btn btn-accent btn-outline btn-sm">Log In</button></Link>
                     }
                 </div>
             </div>
