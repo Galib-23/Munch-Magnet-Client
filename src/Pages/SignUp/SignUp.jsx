@@ -1,26 +1,52 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
-    const {createUser} = useContext(AuthContext);
+    const { createUser, updateUserProfile } = useContext(AuthContext);
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
+        reset,
         //formState: { errors }
     } = useForm();
     const onSubmit = (data) => {
         console.log(data);
         createUser(data.email, data.password)
-        .then(result => {
-            const loggedUser = result.user;
-            console.log("Logged User: ",loggedUser);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            .then(result => {
+                const loggedUser = result.user;
+                console.log("Logged User: ", loggedUser);
+                updateUserProfile(data.name, data.photoURL)
+                    .then(() => {
+                        console.log("user profile updated");
+                        reset();
+                    }).catch(e => console.log(e));
+                Swal.fire({
+                    title: "Sign Up Successfull",
+                    showClass: {
+                        popup: `
+                    animate__animated
+                    animate__fadeInUp
+                    animate__faster
+                  `
+                    },
+                    hideClass: {
+                        popup: `
+                    animate__animated
+                    animate__fadeOutDown
+                    animate__faster
+                  `
+                    }
+                });
+                navigate('/');
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
     return (
         <>
@@ -40,6 +66,12 @@ const SignUp = () => {
                                     <span className="label-text">Name</span>
                                 </label>
                                 <input type="text" placeholder="Your Name" {...register("name")} className="input input-bordered" required />
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Photo URL</span>
+                                </label>
+                                <input type="text" placeholder="Your photo" {...register("photoURL")} className="input input-bordered" required />
                             </div>
                             <div className="form-control">
                                 <label className="label">

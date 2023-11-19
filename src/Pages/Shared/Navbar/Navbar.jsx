@@ -38,8 +38,12 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end">
                     {
-                        user ? <button onClick={handleLogOut} className="btn btn-accent btn-outline">Log Out</button>
-                        : <Link to='/login'><button className="btn btn-accent btn-outline">Log In</button></Link>
+                        user ? <div className="flex items-center gap-2">
+                            <p>{user.displayName}</p>
+                            <img className="w-12 rounded-full" src={user.photoURL} alt="" />
+                            <button onClick={handleLogOut} className="btn btn-accent btn-outline btn-sm">Log Out</button>
+                        </div>
+                        : <Link to='/login'><button className="btn btn-accent btn-outline btn-sm">Log In</button></Link>
                     }
                 </div>
             </div>
