@@ -49,6 +49,7 @@ const Login = () => {
             })
             .catch(error => {
                 console.log(error);
+                alert(`${error}`)
             })
     }
     const handleValidateCapthca = (e) => {

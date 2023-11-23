@@ -49,10 +49,16 @@ const Navbar = () => {
                 <div className="navbar-end">
                     {
                         user ? <div className="flex items-center gap-1 lg:gap-3">
-                            <div className="hidden lg:flex">
-                                {cartIcon}
-                            </div>
-                            <img className="w-12 rounded-full hover:border-2 border-orange-400" src={user.photoURL} alt="" />
+                            <Link to='/dashboard/cart'>
+                                <div className="hidden lg:flex">
+                                    {cartIcon}
+                                </div>
+                            </Link>
+                            {
+                                user.photoURL ?
+                                    <img className="w-12 rounded-full hover:border-2 border-orange-400" src={user.photoURL} alt="" />
+                                    : <></>
+                            }
                             <button onClick={handleLogOut} className="btn btn-accent btn-outline btn-sm">Log Out</button>
                         </div>
                             : <Link to='/login'><button className="btn btn-accent btn-outline btn-sm">Log In</button></Link>
