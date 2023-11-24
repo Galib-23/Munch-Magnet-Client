@@ -4,8 +4,11 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import SocialLogin from "../../Components/SocialLogin/SocialLogin";
 
 const SignUp = () => {
+    const axiosPublic = useAxiosPublic();
     const { createUser, updateUserProfile } = useContext(AuthContext);
     const navigate = useNavigate();
     const {
@@ -20,29 +23,41 @@ const SignUp = () => {
             .then(result => {
                 const loggedUser = result.user;
                 console.log("Logged User: ", loggedUser);
+
                 updateUserProfile(data.name, data.photoURL)
                     .then(() => {
+
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    Swal.fire({
+                                        title: "Sign Up Successfull",
+                                        showClass: {
+                                            popup: `
+                                    animate__animated
+                                    animate__fadeInUp
+                                    animate__faster
+                                  `
+                                        },
+                                        hideClass: {
+                                            popup: `
+                                    animate__animated
+                                    animate__fadeOutDown
+                                    animate__faster
+                                  `
+                                        }
+                                    });
+                                    navigate('/');
+                                }
+                            })
+
                         console.log("user profile updated");
                         reset();
                     }).catch(e => console.log(e));
-                Swal.fire({
-                    title: "Sign Up Successfull",
-                    showClass: {
-                        popup: `
-                    animate__animated
-                    animate__fadeInUp
-                    animate__faster
-                  `
-                    },
-                    hideClass: {
-                        popup: `
-                    animate__animated
-                    animate__fadeOutDown
-                    animate__faster
-                  `
-                    }
-                });
-                navigate('/');
             })
             .catch(error => {
                 console.log(error);
@@ -89,6 +104,9 @@ const SignUp = () => {
                                 <input className="btn text-white btn-primary" type="submit" value="Sign Up" />
                             </div>
                         </form>
+                        <div className="flex justify-center mb-4">
+                            <SocialLogin></SocialLogin>
+                        </div>
                         <p className='text-center mb-2'><small>Have an account? <Link className='font-bold text-blue-600' to='/login'>Login</Link></small></p>
                     </div>
                 </div>
