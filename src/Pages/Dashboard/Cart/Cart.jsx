@@ -1,9 +1,12 @@
 import Swal from "sweetalert2";
 import useCart from "../../../hooks/useCart";
 import { FaTrashAlt } from "react-icons/fa";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Cart = () => {
-    const [cart] = useCart();
+    const [cart, refetch] = useCart();
+    const axiosSecure = useAxiosSecure();
+
     let totalPrice = 0;
     for (let i = 0; i < cart.length; i++) {
         totalPrice = totalPrice + cart[i].price;
@@ -17,15 +20,21 @@ const Cart = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-            //   Swal.fire({
-            //     title: "Deleted!",
-            //     text: "Your file has been deleted.",
-            //     icon: "success"
-            //   });
+                axiosSecure.delete(`/carts/${id}`)
+                    .then(res => {
+                        if (res.data.deletedCount > 0) {
+                            refetch();
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    })
             }
-          });
+        });
     }
     return (
         <div>
@@ -50,7 +59,7 @@ const Cart = () => {
                             cart.map((item, index) =>
                                 <tr key={item._id}>
                                     <th>
-                                        {index+1}
+                                        {index + 1}
                                     </th>
                                     <td>
                                         <div className="flex items-center gap-3">
