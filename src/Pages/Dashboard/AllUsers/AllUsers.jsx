@@ -8,7 +8,12 @@ const AllUsers = () => {
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/users');
+            const res = await axiosSecure.get('/users', {
+                //Sending token to backend for accessing allUsers
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('access-token')}`
+                }
+            });
             return res.data;
         }
     })
@@ -49,9 +54,9 @@ const AllUsers = () => {
             }
         });
     }
-    if(!users){
-        return <span className="loading loading-bars loading-lg"></span>
-    }
+    // if(!users){
+    //     return <span className="loading loading-bars loading-lg"></span>
+    // }
     return (
         <div>
             <div className="flex justify-evenly my-4">
@@ -72,7 +77,7 @@ const AllUsers = () => {
                     </thead>
                     <tbody>
                         {
-                            users?.map((user, index) =>
+                            users.map((user, index) =>
                                 <tr key={user._id}>
                                     <th>{index + 1}</th>
                                     <td>{user.name}</td>
