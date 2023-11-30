@@ -2,6 +2,7 @@ import Swal from "sweetalert2";
 import useCart from "../../../hooks/useCart";
 import { FaTrashAlt } from "react-icons/fa";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
     const [cart, refetch] = useCart();
@@ -36,12 +37,24 @@ const Cart = () => {
             }
         });
     }
+    const handleDisable = () =>{
+        Swal.fire({
+            title: "Oops!",
+            text: "No Item On Cart",
+            icon: "warning"
+        });
+    }
     return (
         <div>
             <div className="flex items-center justify-between mt-6 mb-10">
                 <h2 className="text-4xl font-bold">Items: {cart.length}</h2>
                 <h2 className="text-4xl font-bold">Total Price: {totalPrice}</h2>
-                <button className="btn btn-primary">Pay</button>
+                {   cart.length ?
+                    <Link to='/dashboard/payment'>
+                        <button className="btn btn-primary">Pay</button>
+                    </Link>
+                    : <button onClick={handleDisable} className="btn btn-primary">Pay</button>
+                }
             </div>
             <div className="overflow-x-auto mt-5">
                 <table className="table w-full">
