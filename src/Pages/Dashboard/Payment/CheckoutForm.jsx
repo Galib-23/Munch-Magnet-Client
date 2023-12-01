@@ -5,6 +5,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCart from "../../../hooks/useCart";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 //stripe pass - aa@galib#23
 const CheckoutForm = () => {
     const [error, setError] = useState('');
@@ -15,6 +16,7 @@ const CheckoutForm = () => {
     const axiosSecure = useAxiosSecure();
     const [cart, refetch] = useCart();
     const { user } = useAuth();
+    const navigate = useNavigate();
     let totalPrice = 0;
     for (let i = 0; i < cart.length; i++) {
         totalPrice = totalPrice + cart[i].price;
@@ -82,6 +84,7 @@ const CheckoutForm = () => {
                 const res = await axiosSecure.post('/payments', payment)
                 console.log('Payment Saved Res: ',res.data);
                 refetch();
+                navigate('/dashboard/paymentHistory')
                 if(res.data?.paymentResult?.insertedId){
                     Swal.fire('Payment Successful');
                 }
